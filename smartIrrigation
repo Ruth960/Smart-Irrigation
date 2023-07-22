@@ -1,27 +1,27 @@
-int signal = A0;
-int sensorValue = 0;
-int led= 10;
+// Smart Irrigation System
 
-void setup()
-{
-  pinMode(led, OUTPUT);
+const int moistureSensorPin = A0;
+const int pumpPin = 9;
+const int moistureThreshold = 500; // Adjust this value based on your soil moisture sensor readings
+
+void setup() {
+  pinMode(pumpPin, OUTPUT);
+  digitalWrite(pumpPin, LOW); // Turn off the pump initially
   Serial.begin(9600);
-  
 }
 
-void loop()
-{
- sensorValue = analogRead(sensorValue);
- Serial.println(sensorValue);
-  delay(100);
-  
-  if(sensorValue < 500){
-    digitalWrite(led, HIGH);
+void loop() {
+  int moisture = analogRead(moistureSensorPin);
+
+  if (moisture < moistureThreshold) {
+    // Soil is dry, turn on the pump
+    digitalWrite(pumpPin, HIGH);
+    Serial.println("Pump turned on");
+  } else {
+    // Soil is wet enough, turn off the pump
+    digitalWrite(pumpPin, LOW);
+    Serial.println("Pump turned off");
   }
-  else {
-  	digitalWrite(led,LOW);
-    //delay(100);
-    
-  }
-    
+
+  delay(10); // Adjust the delay based on your requirements
 }
